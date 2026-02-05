@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark p-3">
+        <span class="navbar-brand">School Management System</span>
+        <form th:action="@{/logout}" method="post">
+            <button class="btn btn-outline-danger btn-sm" type="submit">Logout</button>
+        </form>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Welcome, <span sec:authentication="name">User</span>!</h2>
+        <p>Your Role: <span sec:authentication="principal.authorities">Role</span></p>
+
+        <div class="row mt-4">
+            <div class="col-md-6" sec:authorize="hasRole('TEACHER')">
+                <div class="card border-primary mb-3">
+                    <div class="card-header bg-primary text-white">Teacher Controls</div>
+                    <div class="card-body">
+                        <a href="/students" class="btn btn-outline-primary mb-2">Manage Students</a>
+                        <a href="/courses/new" class="btn btn-outline-success mb-2">Create New Course</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6" sec:authorize="hasRole('STUDENT')">
+                <div class="card border-info mb-3">
+                    <div class="card-header bg-info text-white">Student View</div>
+                    <div class="card-body">
+                        <p>You can view your courses and department details here.</p>
+                        <a href="/my-courses" class="btn btn-info">My Courses</a>
+                    </div>
+                </div>
+            </div>
+
+
+            
+            <div class="card mt-3" sec:authorize="hasRole('STUDENT')">
+                <div class="card-body">
+                    <h5 class="card-title">Enroll in a Course</h5>
+                    <form th:action="@{/api/courses/enroll}" method="post">
+                        <div class="input-group">
+                            <select name="courseId" class="form-select">
+                                <option th:each="c : ${allAvailableCourses}" 
+                                        th:value="${c.id}" th:text="${c.title}"></option>
+                            </select>
+                            <button class="btn btn-primary" type="submit">Enroll Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</body>
+</html>
