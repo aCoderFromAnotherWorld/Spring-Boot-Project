@@ -127,10 +127,11 @@ class IntegrationTest {
         studentService.saveStudent(student1);
         studentService.saveStudent(student2);
 
-        // Verify department has students
-        Department retrievedDept = departmentRepository.findById(savedDepartment.getId()).orElseThrow();
-        assertNotNull(retrievedDept.getStudents());
-        assertTrue(retrievedDept.getStudents().size() >= 2);
+        // Verify department has students by querying students table
+        // (avoids lazy loading issue with @OneToMany relationship)
+        List<Student> studentsInDept = studentRepository.findByDepartmentId(savedDepartment.getId());
+        assertNotNull(studentsInDept);
+        assertTrue(studentsInDept.size() >= 2);
     }
 
     @Test
