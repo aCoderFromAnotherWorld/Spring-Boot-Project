@@ -24,6 +24,14 @@ public class SchoolController {
     //          PAGE NAVIGATION (VIEWS)
     // ==========================================
 
+    @GetMapping("/")
+    public String home(Principal principal) {
+        if (principal != null) {
+            return "redirect:/dashboard";
+        }
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login";
