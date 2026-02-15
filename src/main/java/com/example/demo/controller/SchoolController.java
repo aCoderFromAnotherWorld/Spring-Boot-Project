@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+﻿package com.example.demo.controller;
 
 import com.example.demo.entity.*;
 import com.example.demo.service.*;
@@ -91,18 +91,15 @@ public class SchoolController {
     @PreAuthorize("hasRole('STUDENT')")
     public String enrollInCourse(@RequestParam Long courseId, Principal principal) {
         try {
-            // In our DataInitializer, we created a student named "student_user"
-            // Let's find that student dynamically instead of hardcoding 1L
             List<Student> students = studentService.getAllStudents();
             Student currentStudent = students.stream()
-                    .filter(s -> s.getName().equals(principal.getName()))
+                    .filter(s -> s.getUsername().equals(principal.getName()))
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("Student record not found in database"));
 
             studentService.enrollStudentInCourse(currentStudent.getId(), courseId);
             return "redirect:/dashboard?success=enrolled";
         } catch (Exception e) {
-            // Redirect with an error message instead of showing the Whitelabel page
             return "redirect:/dashboard?error=enrollment_failed";
         }
     }
