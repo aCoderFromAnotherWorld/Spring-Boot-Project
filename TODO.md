@@ -1,11 +1,35 @@
-# TODO: Implement Database-Based Authentication
+# Test Implementation Plan
 
-## Steps:
-- [ ] 1. Add username and password fields to Student.java
-- [ ] 2. Add username and password fields to Teacher.java
-- [ ] 3. Add findByUsername method to StudentRepository.java
-- [ ] 4. Add findByUsername method to TeacherRepository.java
-- [ ] 5. Create CustomUserDetailsService.java
-- [ ] 6. Update SecurityConfig.java to use custom UserDetailsService
+## Progress Tracking
 
-## Status: Not Started
+- [x] 1. Create test configuration (application-test.properties)
+- [x] 2. Create StudentServiceTest.java (unit tests for StudentService)
+- [x] 3. Create CourseServiceTest.java (unit tests for CourseService)
+- [ ] 4. Update SchoolControllerTest.java (controller unit tests)
+- [ ] 5. Create IntegrationTest.java (integration tests)
+- [ ] 6. Create GitHub Actions CI/CD workflow (.github/workflows/maven.yml)
+
+## Testing Commands
+
+```
+bash
+# Run all tests
+./mvnw test
+
+# Run unit tests only
+./mvnw test -Dtest=*ServiceTest
+
+# Run integration tests
+./mvnw test -Dtest=*IntegrationTest
+
+# Run with coverage
+./mvnw test jacoco:report
+```
+
+## CI/CD Pipeline
+
+The GitHub Actions workflow will:
+1. Build the application
+2. Run tests
+3. Build Docker image
+4. Deploy (if configured)
